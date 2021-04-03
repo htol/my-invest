@@ -19,7 +19,6 @@ import (
 var token string
 
 func init() {
-    // loads values from .env into the system
     if err := godotenv.Load(); err != nil {
         log.Print("No .env file found")
     }
@@ -38,7 +37,7 @@ func main() {
 	defer ui.Close()
 
     client := sdk.NewRestClient(token)
-	rand.Seed(time.Now().UnixNano()) // инициируем Seed рандома для функции requestID
+	rand.Seed(time.Now().UnixNano())
 
     cashTable := makeCashTable(getCash(client))
     positionsTable := makePositionsTable(getPositions(client))
@@ -102,7 +101,7 @@ func makeCashTable(data [][]string) *widgets.Table {
     table.TextStyle = ui.NewStyle(ui.ColorMagenta)
     table.TextAlignment = ui.AlignRight
     table.RowSeparator = false
-	table.SetRect(61, 0, 61+18, len(table.Rows)+2)
+	table.SetRect(0, 0, 18, len(table.Rows)+2)
 
     return table
 }
@@ -140,7 +139,8 @@ func makePositionsTable(data [][]string) *widgets.Table {
     table.TextAlignment = ui.AlignRight
     table.RowSeparator = false
     table.RowStyles[0] = ui.NewStyle(ui.ColorBlue, ui.ColorBlack, ui.ModifierBold)
-	table.SetRect(0, 0, 60, len(table.Rows)+2)
+    table.ColumnWidths = []int{8, 47, 9, 11}
+	table.SetRect(0, 7, 80, len(table.Rows)+2)
 
     return table
 }
@@ -153,17 +153,17 @@ func getPositions(client *sdk.RestClient) [][]string {
     ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
     defer cancel()
 
-    stocks, err := client.PositionsPortfolio(ctx, sdk.DefaultAccount)
+    entries, err := client.PositionsPortfolio(ctx, sdk.DefaultAccount)
     if err != nil {
         log.Fatalln(err)
     }
 
-    for _, p := range stocks {
+    for _, entry := range entries {
         var row []string
-        row = append(row, string(p.InstrumentType))
-        row = append(row, string(p.Name))
-        row = append(row, fmt.Sprintf("%.2f", p.Balance))
-        row = append(row, fmt.Sprintf("%.2f %s", p.AveragePositionPrice.Value, Currencies[p.AveragePositionPrice.Currency].Symbol))
+        row = append(row, string(entry.InstrumentType))
+        row = append(row, string(entry.Name))
+        row = append(row, fmt.Sprintf("%.2f", entry.Balance))
+        row = append(row, fmt.Sprintf("%.2f %s", entry.AveragePositionPrice.Value, Currencies[entry.AveragePositionPrice.Currency].Symbol))
 
         // fmt.Printf("%+v\n", row)
         table = append(table, row)
