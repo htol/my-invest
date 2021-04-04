@@ -1,4 +1,4 @@
-module my-invest
+module tcsc
 
 go 1.14
 
@@ -6,11 +6,10 @@ require (
 	github.com/TinkoffCreditSystems/invest-openapi-go-sdk v0.6.1
 	github.com/gizak/termui/v3 v3.1.0
 	github.com/joho/godotenv v1.3.0
-	github.com/spf13/cobra v1.1.3 // indirect
-	golang.org/x/net v0.0.0-20200904194848-62affa334b73 // indirect
-	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43 // indirect
+	github.com/mitchellh/go-homedir v1.1.0
+	github.com/spf13/cobra v1.1.3
+	github.com/spf13/viper v1.7.0
+	github.com/stretchr/testify v1.4.0 // indirect
 	golang.org/x/sys v0.0.0-20200909081042-eff7692f9009 // indirect
-	google.golang.org/api v0.31.0 // indirect
-	google.golang.org/genproto v0.0.0-20200911024640-645f7a48b24f // indirect
-	google.golang.org/grpc v1.32.0 // indirect
+	golang.org/x/text v0.3.3 // indirect
 )
